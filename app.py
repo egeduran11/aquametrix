@@ -5,7 +5,7 @@ import plotly.express as px
 
 # --- SAYFA YAPILANDIRMASI ---
 st.set_page_config(
-    page_title="AquaMetrix Fizibilite Analizi",
+    page_title="IndaQua Fizibilite Analizi",
     page_icon="💧",
     layout="wide"
 )
@@ -18,19 +18,19 @@ def hesapla_fizibilite(sizinti_debisi, su_maliyeti, sensor_maliyeti, yillik_sizi
     SAAT_GUN = 24
     LITRE_M3 = 1000
     KURULACAK_SENSOR_SAYISI = 200
-    TESPIT_SURESI_AQUAMETRIX_GUN = 1
+    TESPIT_SURESI_IndaQua_GUN = 1
 
     # Geleneksel Yöntem Kaybı
     yillik_kayip_geleneksel_lt = (sizinti_debisi * DAKIKA_SAAT * SAAT_GUN * geleneksel_tespit_suresi) * yillik_sizinti_sayisi
     yillik_maliyet_geleneksel_tl = (yillik_kayip_geleneksel_lt / LITRE_M3) * su_maliyeti
 
-    # AquaMetrix Yöntemi Kaybı
-    yillik_kayip_aquametrix_lt = (sizinti_debisi * DAKIKA_SAAT * SAAT_GUN * TESPIT_SURESI_AQUAMETRIX_GUN) * yillik_sizinti_sayisi
-    yillik_maliyet_aquametrix_tl = (yillik_kayip_aquametrix_lt / LITRE_M3) * su_maliyeti
+    # IndaQua Yöntemi Kaybı
+    yillik_kayip_IndaQua_lt = (sizinti_debisi * DAKIKA_SAAT * SAAT_GUN * TESPIT_SURESI_IndaQua_GUN) * yillik_sizinti_sayisi
+    yillik_maliyet_IndaQua_tl = (yillik_kayip_IndaQua_lt / LITRE_M3) * su_maliyeti
     
     # Net Fayda ve ROI
-    kurtarilan_su_m3 = (yillik_kayip_geleneksel_lt - yillik_kayip_aquametrix_lt) / LITRE_M3
-    tasarruf_tl = yillik_maliyet_geleneksel_tl - yillik_maliyet_aquametrix_tl
+    kurtarilan_su_m3 = (yillik_kayip_geleneksel_lt - yillik_kayip_IndaQua_lt) / LITRE_M3
+    tasarruf_tl = yillik_maliyet_geleneksel_tl - yillik_maliyet_IndaQua_tl
     yatirim_tl = KURULACAK_SENSOR_SAYISI * sensor_maliyeti
     
     roi_yil = yatirim_tl / tasarruf_tl if tasarruf_tl > 0 else float('inf')
@@ -45,9 +45,9 @@ def hesapla_fizibilite(sizinti_debisi, su_maliyeti, sensor_maliyeti, yillik_sizi
 # --- ARAYÜZ TASARIMI ---
 
 # --- Başlık ve Giriş ---
-st.title("💧 AquaMetrix: Potansiyel Etki ve Fizibilite Simülatörü")
+st.title("💧 IndaQua: Potansiyel Etki ve Fizibilite Simülatörü")
 st.markdown("""
-Bu interaktif simülatör, **AquaMetrix** projesinin potansiyel çevresel ve ekonomik etkisini modellemektedir. 
+Bu interaktif simülatör, **IndaQua** projesinin potansiyel çevresel ve ekonomik etkisini modellemektedir. 
 Yandaki menüden parametreleri değiştirerek projenin farklı koşullar altındaki performansını ve yatırım geri dönüş süresini (ROI) analiz edebilirsiniz.
 """)
 
@@ -163,13 +163,13 @@ with st.expander("📘 Model Metodolojisi ve Varsayımlar"):
 
     1.  **Yıllık Su Kaybı (Litre)** = `(Sızıntı Debisi (L/dk) * 60 * 24 * Ortalama Tespit Süresi (Gün)) * Yıllık Sızıntı Sayısı`
     2.  **Yıllık Maliyet (TL)** = `(Yıllık Su Kaybı / 1000) * Su Fiyatı (TL/m³)`
-    3.  **Yıllık Tasarruf (TL)** = `Geleneksel Yöntem Yıllık Maliyeti - AquaMetrix Yıllık Maliyeti`
+    3.  **Yıllık Tasarruf (TL)** = `Geleneksel Yöntem Yıllık Maliyeti - IndaQua Yıllık Maliyeti`
     4.  **Toplam Yatırım (TL)** = `Sensör Sayısı * Tek Sensör Maliyeti`
     5.  **Geri Dönüş Süresi (Yıl)** = `Toplam Yatırım / Yıllık Tasarruf`
 
     **Temel Varsayımlar:**
     - Pilot bölge **100 km'lik** bir şebeke hattını temsil etmektedir.
     - Toplam **200 adet** sensörün stratejik olarak yerleştirileceği varsayılmıştır.
-    - AquaMetrix sistemi ile tespit edilen bir sızıntıya **1 gün (24 saat)** içinde müdahale edileceği öngörülmüştür.
+    - IndaQua sistemi ile tespit edilen bir sızıntıya **1 gün (24 saat)** içinde müdahale edileceği öngörülmüştür.
     - Analiz, kurulum işçiliği, bakım ve sunucu gibi operasyonel maliyetleri içermemektedir.
     """)
